@@ -1,6 +1,16 @@
 function main(params) {
 
-    if(params.__ow_headers['content-type'] !== "application/json"){
+    if(!params.WATSON_VISUAL_RECOGNITION_KEY){
+        
+        return {
+            statusCode: 500,
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify({ status : "err", message : `The parameter "WATSON_VISUAL_RECOGNITION_KEY" has not been set.` })
+        };
+
+    } else if(params.__ow_headers['content-type'] !== "application/json"){
    
         return {
             statusCode: 400,
