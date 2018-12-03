@@ -47,9 +47,8 @@ function main(params) {
 
         return new Promise( (resolve, reject) => {
 
-            visualRecognition.classify(params, function(err, res) {
+            visualRecognition.detectFaces(params, function(err, result) {
                 if (err) {
-                // console.log(err);
 
                     reject({
                         headers : {
@@ -59,34 +58,24 @@ function main(params) {
                     });
 
                 } else {
-                    console.log(JSON.stringify(res, null, 2));
+                    
+                    const faces = result.images[0].faces.map( face => {
+
+                        return face.face_location;
+
+                    } );
 
                     resolve( {
                         headers : {
                             "Content-Type" : "application/json"
                         },
-                        body : JSON.stringify(res, null, 2)
+                        body : JSON.stringify( { faces } )
                     } );
 
                 }
             });
 
         } );
-
-
-        /*return {
-            headers : {
-                "Content-Type" : "application/json"
-            },
-            body : {
-                result : {
-                    top : 0,
-                    right : 0,
-                    bottom : 0,
-                    left : 0
-                }
-            }
-        };*/
 
     }
 
