@@ -1,3 +1,5 @@
+var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
+
 function main(params) {
 
     if(!params.WATSON_VISUAL_RECOGNITION_KEY){
@@ -34,7 +36,45 @@ function main(params) {
 
         const imageBuffer = Buffer.from(params.image, 'base64');
 
-        return {
+        const visualRecognition = new VisualRecognitionV3({
+            version: '2018-03-19',
+            iam_apikey: params.WATSON_VISUAL_RECOGNITION_KEY
+        });
+
+        var params = {
+            images_file: imageBuffer
+        };
+
+        return new Promise( (resolve, reject) => {
+
+            visualRecognition.classify(params, function(err, res) {
+                if (err) {
+                // console.log(err);
+
+                    reject({
+                        headers : {
+                            "Content-Type" : "application/json"
+                        },
+                        body : JSON.stringify(err)
+                    });
+
+                } else {
+                    console.log(JSON.stringify(res, null, 2));
+
+                    resolve( {
+                        headers : {
+                            "Content-Type" : "application/json"
+                        },
+                        body : JSON.stringify(res, null, 2)
+                    } );
+
+                }
+            });
+
+        } );
+
+
+        /*return {
             headers : {
                 "Content-Type" : "application/json"
             },
@@ -46,7 +86,7 @@ function main(params) {
                     left : 0
                 }
             }
-        };
+        };*/
 
     }
 

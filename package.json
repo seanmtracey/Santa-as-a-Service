@@ -4,7 +4,9 @@
   "description": "Santa on demand - just what you've always wanted for christmas",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile-docker": "rm -rf ./node_modules/sharp && docker run -it -v \"$(pwd):/usr/src/app\" nodesource/trusty:6.7 /usr/src/app/prepare.sh",
+    "package": "zip -r action.zip * -x \".env\" -x \".git\" -x \"test/*\" -x \"invoke.js\" -x \"-x \"params.json\"\""
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/seanmtracey/Santa-as-a-Service/issues"
   },
-  "homepage": "https://github.com/seanmtracey/Santa-as-a-Service#readme"
+  "homepage": "https://github.com/seanmtracey/Santa-as-a-Service#readme",
+  "dependencies": {
+    "watson-developer-cloud": "^3.13.1"
+  }
 }
